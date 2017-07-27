@@ -6,7 +6,7 @@ import './Index.scss';
 const Index = () => (
   <div className="Index">
     <img
-      src="/logo-500-black.png"
+      src="/logo-500-white.png"
       alt="Clovoice"
     />
     <h1>Clovoice</h1>

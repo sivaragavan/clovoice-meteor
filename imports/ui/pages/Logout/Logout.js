@@ -6,7 +6,7 @@ import './Logout.scss';
 const Logout = () => (
   <div className="Logout">
     <img
-      src="/logo-500-black.png"
+      src="/logo-500-white.png"
       alt="Clovoice"
     />
     <h1>Stay safe out there.</h1>
