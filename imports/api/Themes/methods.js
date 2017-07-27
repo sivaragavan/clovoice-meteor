@@ -1,41 +1,41 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import Documents from './Documents';
+import Themes from './Themes';
 import rateLimit from '../../modules/rate-limit';
 
 Meteor.methods({
-  'documents.insert': function documentsInsert(doc) {
-    check(doc, {
+  'themes.insert': function themesInsert(theme) {
+    check(theme, {
       title: String,
       body: String,
     });
 
     try {
-      return Documents.insert({ owner: this.userId, ...doc });
+      return Themes.insert({ owner: this.userId, ...theme });
     } catch (exception) {
       throw new Meteor.Error('500', exception);
     }
   },
-  'documents.update': function documentsUpdate(doc) {
-    check(doc, {
+  'themes.update': function themesUpdate(theme) {
+    check(theme, {
       _id: String,
       title: String,
       body: String,
     });
 
     try {
-      const documentId = doc._id;
-      Documents.update(documentId, { $set: doc });
-      return documentId; // Return _id so we can redirect to document after update.
+      const themeId = theme._id;
+      Themes.update(themeId, { $set: theme });
+      return themeId; // Return _id so we can redirect to theme after update.
     } catch (exception) {
       throw new Meteor.Error('500', exception);
     }
   },
-  'documents.remove': function documentsRemove(documentId) {
-    check(documentId, String);
+  'themes.remove': function themesRemove(themeId) {
+    check(themeId, String);
 
     try {
-      return Documents.remove(documentId);
+      return Themes.remove(themeId);
     } catch (exception) {
       throw new Meteor.Error('500', exception);
     }
@@ -44,9 +44,9 @@ Meteor.methods({
 
 rateLimit({
   methods: [
-    'documents.insert',
-    'documents.update',
-    'documents.remove',
+    'themes.insert',
+    'themes.update',
+    'themes.remove',
   ],
   limit: 5,
   timeRange: 1000,

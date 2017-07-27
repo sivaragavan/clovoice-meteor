@@ -3,49 +3,49 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-const Documents = new Mongo.Collection('Documents');
+const Themes = new Mongo.Collection('Themes');
 
-Documents.allow({
+Themes.allow({
   insert: () => false,
   update: () => false,
   remove: () => false,
 });
 
-Documents.deny({
+Themes.deny({
   insert: () => true,
   update: () => true,
   remove: () => true,
 });
 
-Documents.schema = new SimpleSchema({
+Themes.schema = new SimpleSchema({
   owner: {
     type: String,
-    label: 'The ID of the user this document belongs to.',
+    label: 'The ID of the user this theme belongs to.',
   },
   createdAt: {
     type: String,
-    label: 'The date this document was created.',
+    label: 'The date this theme was created.',
     autoValue() {
       if (this.isInsert) return (new Date()).toISOString();
     },
   },
   updatedAt: {
     type: String,
-    label: 'The date this document was last updated.',
+    label: 'The date this theme was last updated.',
     autoValue() {
       if (this.isInsert || this.isUpdate) return (new Date()).toISOString();
     },
   },
   title: {
     type: String,
-    label: 'The title of the document.',
+    label: 'The title of the theme.',
   },
   body: {
     type: String,
-    label: 'The body of the document.',
+    label: 'The body of the theme.',
   },
 });
 
-Documents.attachSchema(Documents.schema);
+Themes.attachSchema(Themes.schema);
 
-export default Documents;
+export default Themes;

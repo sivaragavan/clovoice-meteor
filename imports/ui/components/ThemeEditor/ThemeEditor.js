@@ -7,7 +7,7 @@ import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
 
-class DocumentEditor extends React.Component {
+class ThemeEditor extends React.Component {
   componentDidMount() {
     const component = this;
     validate(component.form, {
@@ -24,7 +24,7 @@ class DocumentEditor extends React.Component {
           required: 'Need a title in here, Seuss.',
         },
         body: {
-          required: 'This thneeds a body, please.',
+          required: 'This needs a body, please.',
         },
       },
       submitHandler() { component.handleSubmit(); },
@@ -33,29 +33,29 @@ class DocumentEditor extends React.Component {
 
   handleSubmit() {
     const { history } = this.props;
-    const existingDocument = this.props.doc && this.props.doc._id;
-    const methodToCall = existingDocument ? 'documents.update' : 'documents.insert';
-    const doc = {
+    const existingTheme = this.props.theme && this.props.theme._id;
+    const methodToCall = existingTheme ? 'themes.update' : 'themes.insert';
+    const theme = {
       title: this.title.value.trim(),
       body: this.body.value.trim(),
     };
 
-    if (existingDocument) doc._id = existingDocument;
+    if (existingTheme) theme._id = existingTheme;
 
-    Meteor.call(methodToCall, doc, (error, documentId) => {
+    Meteor.call(methodToCall, theme, (error, themeId) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
-        const confirmation = existingDocument ? 'Document updated!' : 'Document added!';
+        const confirmation = existingTheme ? 'Theme updated!' : 'Theme added!';
         this.form.reset();
         Bert.alert(confirmation, 'success');
-        history.push(`/documents/${documentId}`);
+        history.push(`/themes/${themeId}`);
       }
     });
   }
 
   render() {
-    const { doc } = this.props;
+    const { theme } = this.props;
     return (<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
       <FormGroup>
         <ControlLabel>Title</ControlLabel>
@@ -64,7 +64,7 @@ class DocumentEditor extends React.Component {
           className="form-control"
           name="title"
           ref={title => (this.title = title)}
-          defaultValue={doc && doc.title}
+          defaultValue={theme && theme.title}
           placeholder="Oh, The Places You'll Go!"
         />
       </FormGroup>
@@ -74,24 +74,24 @@ class DocumentEditor extends React.Component {
           className="form-control"
           name="body"
           ref={body => (this.body = body)}
-          defaultValue={doc && doc.body}
+          defaultValue={theme && theme.body}
           placeholder="Congratulations! Today is your day. You're off to Great Places! You're off and away!"
         />
       </FormGroup>
       <Button type="submit" bsStyle="success">
-        {doc && doc._id ? 'Save Changes' : 'Add Document'}
+        {theme && theme._id ? 'Save Changes' : 'Add Theme'}
       </Button>
     </form>);
   }
 }
 
-DocumentEditor.defaultProps = {
-  doc: { title: '', body: '' },
+ThemeEditor.defaultProps = {
+  theme: { title: '', body: '' },
 };
 
-DocumentEditor.propTypes = {
-  doc: PropTypes.object,
+ThemeEditor.propTypes = {
+  theme: PropTypes.object,
   history: PropTypes.object.isRequired,
 };
 
-export default DocumentEditor;
+export default ThemeEditor;

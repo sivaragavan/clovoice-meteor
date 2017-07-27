@@ -6,30 +6,30 @@ import { timeago, monthDayYearAtTime } from '@cleverbeagle/dates';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Bert } from 'meteor/themeteorchef:bert';
-import DocumentsCollection from '../../../api/Documents/Documents';
+import ThemesCollection from '../../../api/Themes/Themes';
 import Loading from '../../components/Loading/Loading';
 
-import './Documents.scss';
+import './Themes.scss';
 
-const handleRemove = (documentId) => {
+const handleRemove = (themeId) => {
   if (confirm('Are you sure? This is permanent!')) {
-    Meteor.call('documents.remove', documentId, (error) => {
+    Meteor.call('themes.remove', themeId, (error) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
       } else {
-        Bert.alert('Document deleted!', 'success');
+        Bert.alert('Theme deleted!', 'success');
       }
     });
   }
 };
 
-const Documents = ({ loading, documents, match, history }) => (!loading ? (
-  <div className="Documents">
+const Themes = ({ loading, themes, match, history }) => (!loading ? (
+  <div className="Themes">
     <div className="page-header clearfix">
-      <h4 className="pull-left">Documents</h4>
-      <Link className="btn btn-success pull-right" to={`${match.url}/new`}>Add Document</Link>
+      <h4 className="pull-left">Themes</h4>
+      <Link className="btn btn-success pull-right" to={`${match.url}/new`}>Add Theme</Link>
     </div>
-    {documents.length ? <Table responsive>
+    {themes.length ? <Table responsive>
       <thead>
         <tr>
           <th>Title</th>
@@ -40,7 +40,7 @@ const Documents = ({ loading, documents, match, history }) => (!loading ? (
         </tr>
       </thead>
       <tbody>
-        {documents.map(({ _id, title, createdAt, updatedAt }) => (
+        {themes.map(({ _id, title, createdAt, updatedAt }) => (
           <tr key={_id}>
             <td>{title}</td>
             <td>{timeago(updatedAt)}</td>
@@ -62,21 +62,21 @@ const Documents = ({ loading, documents, match, history }) => (!loading ? (
           </tr>
         ))}
       </tbody>
-    </Table> : <Alert bsStyle="warning">No documents yet!</Alert>}
+    </Table> : <Alert bsStyle="warning">No themes yet!</Alert>}
   </div>
 ) : <Loading />);
 
-Documents.propTypes = {
+Themes.propTypes = {
   loading: PropTypes.bool.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.object).isRequired,
+  themes: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
 
 export default createContainer(() => {
-  const subscription = Meteor.subscribe('documents');
+  const subscription = Meteor.subscribe('themes');
   return {
     loading: !subscription.ready(),
-    documents: DocumentsCollection.find().fetch(),
+    themes: ThemesCollection.find().fetch(),
   };
-}, Documents);
+}, Themes);

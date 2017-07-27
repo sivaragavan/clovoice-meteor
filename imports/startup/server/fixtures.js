@@ -1,17 +1,17 @@
 import seeder from '@cleverbeagle/seeder';
 import { Meteor } from 'meteor/meteor';
-import Documents from '../../api/Documents/Documents';
+import Themes from '../../api/Themes/Themes';
 
-const documentsSeed = userId => ({
-  collection: Documents,
+const themesSeed = userId => ({
+  collection: Themes,
   environments: ['development', 'staging'],
   noLimit: true,
   modelCount: 5,
   model(dataIndex) {
     return {
       owner: userId,
-      title: `Document #${dataIndex + 1}`,
-      body: `This is the body of document #${dataIndex + 1}`,
+      title: `Theme #${dataIndex + 1}`,
+      body: `This is the body of theme #${dataIndex + 1}`,
     };
   },
 });
@@ -30,7 +30,7 @@ seeder(Meteor.users, {
     },
     roles: ['admin'],
     data(userId) {
-      return documentsSeed(userId);
+      return themesSeed(userId);
     },
   }],
   modelCount: 5,
@@ -47,7 +47,7 @@ seeder(Meteor.users, {
       },
       roles: ['user'],
       data(userId) {
-        return documentsSeed(userId);
+        return themesSeed(userId);
       },
     };
   },
